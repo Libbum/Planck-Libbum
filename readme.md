@@ -9,3 +9,9 @@ At the moment, it's a work in progress and probably not what you want to use.
 ## Keymap 0: Basic layer using an en_AU locale, Workman center split layout
 
 ![Layer 0](layout/layer0.png)
+
+## Building
+
+`sudo make planck-rev4-libbum-dfu` from the `qmk_firmware` directory.
+
+
