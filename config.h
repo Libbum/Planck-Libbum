@@ -3,6 +3,12 @@
 
 #include "../../config.h"
 
+/* tap dance key press termination interval */
+#define TAPPING_TERM 250
+
+/* thumb key tap-shift() double tap: one shot shift (0) off (1) on */
+#define DT_SHIFT 1
+
 #ifdef AUDIO_ENABLE
     #define STARTUP_SONG SONG(PLANCK_SOUND)
     // #define STARTUP_SONG SONG(NO_SOUND)
