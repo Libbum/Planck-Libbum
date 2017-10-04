@@ -10,6 +10,7 @@ extern keymap_config_t keymap_config;
 
 enum planck_layers {
     _BASE = 0,
+    _SHIFT,
     _LSHIFT,
     _RSHIFT,
     _MOUSE
@@ -37,12 +38,16 @@ enum planck_keycodes {
 enum tap_dance {
     _CAPS = 0,
     _ENT,
-    _SPC
+    _SPC,
+    _DQOT,
+    _QUOT
 };
 
 #define TD_CAPS TD(_CAPS)
 #define TD_ENT  TD(_ENT) //process_record_user() extends handling
 #define TD_SPC  TD(_SPC)
+#define TD_QUOT  TD(_QUOT)
+#define TD_DQOT TD(_DQOT)
 
 //Keycodes
 #define ___x___ KC_TRNS
@@ -68,7 +73,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = {
         {KC_Q,   KC_D,   KC_R,   KC_W,   KC_B,   OS_CALT, OS_CGUI, KC_J,   KC_F,    KC_U,    KC_P,   KC_SCLN},
         {KC_A,   KC_S,   KC_H,   KC_T,   KC_G,   OS_SALT, OS_SGUI, KC_Y,   KC_N,    KC_E,    KC_O,   KC_I},
-        {KC_Z,   KC_X,   KC_M,   KC_C,   KC_V,   TD_CAPS, OS_CSFT, KC_K,   KC_L,    KC_COMM, KC_DOT, KC_QUOTE},
+        {KC_Z,   KC_X,   KC_M,   KC_C,   KC_V,   TD_CAPS, OS_CSFT, KC_K,   KC_L,    KC_COMM, KC_DOT, TD_QUOT},
+        {OS_CTL, OS_GUI, OS_ALT, KC_ESC, TD_ENT, KC_TAB,  KC_BSPC, TD_SPC, KC_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
+    },
+
+    [_SHIFT] = {
+        {S(KC_Q),   S(KC_D),   S(KC_R),   S(KC_W),   S(KC_B),   OS_CALT, OS_CGUI, S(KC_J),   S(KC_F),    S(KC_U),    S(KC_P),   KC_SCLN},
+        {S(KC_A),   S(KC_S),   S(KC_H),   S(KC_T),   S(KC_G),   OS_SALT, OS_SGUI, S(KC_Y),   S(KC_N),    S(KC_E),    S(KC_O),   S(KC_I)},
+        {S(KC_Z),   S(KC_X),   S(KC_M),   S(KC_C),   S(KC_V),   TD_CAPS, OS_CSFT, S(KC_K),   S(KC_L),    KC_COMM, KC_DOT, TD_QUOT},
         {OS_CTL, OS_GUI, OS_ALT, KC_ESC, TD_ENT, KC_TAB,  KC_BSPC, TD_SPC, KC_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
     },
 
@@ -86,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LSHIFT] = {
         {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), KC_COLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
-        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, KC_QUOT},
+        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, TD_DQOT},
         {OS_CTL,  OS_GUI,  OS_ALT,  KC_ESC,  ___fn__, KC_TAB,  KC_DEL,  KC_MINS, KC_LEFT, S_DOWN,  S_UP,    S_RGHT}
     },
 
@@ -104,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_RSHIFT] = {
         {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), KC_COLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
-        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, KC_QUOT},
+        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, TD_DQOT},
         {OS_CTL,  OS_GUI,  OS_ALT,  KC_ESC,  KC_UNDS, KC_TAB,  KC_BSPC, ___fn__, KC_LEFT, S_DOWN,  S_UP,    S_RGHT}
     },
 
@@ -260,6 +272,63 @@ void space_reset(qk_tap_dance_state_t *state, void *user_data)
     tap_reset(KC_SPC, _RSHIFT);
 }
 
+// tap dance shift rules
+#define S_NEVER  0
+#define S_SINGLE 1
+#define S_DOUBLE 2
+#define S_ALWAYS S_SINGLE | S_DOUBLE
+
+void symbol_pair(uint8_t shift, uint16_t left, uint16_t right)
+{
+  if (shift & S_DOUBLE) {
+    shift_key(left);
+    shift_key(right);
+  }
+  else {
+    tap_key(left);
+    tap_key(right);
+  }
+}
+
+#define CLOSE 1
+
+// tap dance symbol pairs
+void tap_pair(qk_tap_dance_state_t *state, uint8_t shift, uint16_t left, uint16_t right, uint8_t modifier, uint8_t close)
+{
+  // triple tap: left right with cursor between symbol pair a la vim :-)
+  if (state->count > 2) {
+    symbol_pair(shift, left, right);
+    tap_key(KC_LEFT);
+  }
+  // double tap: left right
+  else if (state->count > 1) {
+    symbol_pair(shift, left, right);
+  }
+  // down: modifier
+  else if (state->pressed) {
+    if (modifier) {
+      register_code(modifier);
+    }
+  }
+  // tap: left (close: right)
+  else {
+    if (shift & S_SINGLE) {
+      shift_key(close ? right : left);
+    }
+    else {
+      tap_key(close ? right : left);
+    }
+  }
+  if (!modifier) {
+    reset_tap_dance(state);
+  }
+}
+
+void quote(qk_tap_dance_state_t *state, void *user_data)
+{
+  tap_pair(state, S_NEVER, KC_QUOT, KC_QUOT, 0, 0);
+}
+
 void caps(qk_tap_dance_state_t *state, void *user_data)
 {
     if (state->count > 1) {
@@ -275,6 +344,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [_CAPS] = ACTION_TAP_DANCE_FN         (caps)
     ,[_ENT]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, enter, enter_reset)
     ,[_SPC]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, space, space_reset)
+    ,[_QUOT] = ACTION_TAP_DANCE_FN         (quote)
 };
 
 
