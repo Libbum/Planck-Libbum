@@ -13,7 +13,8 @@ enum planck_layers {
     _SHIFT,
     _LSHIFT,
     _RSHIFT,
-    _MOUSE
+    _MOUSE,
+    _SYMBOL
 };
 
 enum planck_keycodes {
@@ -25,7 +26,8 @@ enum planck_keycodes {
     OS_CTL  = OSM(MOD_LCTL),
     OS_GUI  = OSM(MOD_LGUI),
     OS_SALT = OSM(MOD_LALT | MOD_LSFT),
-    OS_SGUI = OSM(MOD_LGUI | MOD_LSFT)
+    OS_SGUI = OSM(MOD_LGUI | MOD_LSFT),
+    LT_LEFT = LT (_SYMBOL, KC_LEFT)
 };
 
 
@@ -40,7 +42,13 @@ enum tap_dance {
     _ENT,
     _SPC,
     _DQOT,
-    _QUOT
+    _QUOT,
+    _LBRC,
+    _LCBR,
+    _LPRN,
+    _RBRC,
+    _RCBR,
+    _RPRN
 };
 
 #define TD_CAPS TD(_CAPS)
@@ -48,6 +56,12 @@ enum tap_dance {
 #define TD_SPC  TD(_SPC)
 #define TD_QUOT  TD(_QUOT)
 #define TD_DQOT TD(_DQOT)
+#define TD_RBRC TD(_RBRC)
+#define TD_RCBR TD(_RCBR)
+#define TD_RPRN TD(_RPRN)
+#define TD_LBRC TD(_LBRC)
+#define TD_LCBR TD(_LCBR)
+#define TD_LPRN TD(_LPRN)
 
 //Keycodes
 #define ___x___ KC_TRNS
@@ -74,14 +88,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         {KC_Q,   KC_D,   KC_R,   KC_W,   KC_B,   OS_CALT, OS_CGUI, KC_J,   KC_F,    KC_U,    KC_P,   KC_SCLN},
         {KC_A,   KC_S,   KC_H,   KC_T,   KC_G,   OS_SALT, OS_SGUI, KC_Y,   KC_N,    KC_E,    KC_O,   KC_I},
         {KC_Z,   KC_X,   KC_M,   KC_C,   KC_V,   TD_CAPS, OS_CSFT, KC_K,   KC_L,    KC_COMM, KC_DOT, TD_QUOT},
-        {OS_CTL, OS_GUI, OS_ALT, KC_ESC, TD_ENT, KC_TAB,  KC_BSPC, TD_SPC, KC_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
+        {OS_CTL, OS_GUI, OS_ALT, KC_ESC, TD_ENT, KC_TAB,  KC_BSPC, TD_SPC, LT_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
     },
 
     [_SHIFT] = {
         {S(KC_Q),   S(KC_D),   S(KC_R),   S(KC_W),   S(KC_B),   OS_CALT, OS_CGUI, S(KC_J),   S(KC_F),    S(KC_U),    S(KC_P),   KC_SCLN},
         {S(KC_A),   S(KC_S),   S(KC_H),   S(KC_T),   S(KC_G),   OS_SALT, OS_SGUI, S(KC_Y),   S(KC_N),    S(KC_E),    S(KC_O),   S(KC_I)},
         {S(KC_Z),   S(KC_X),   S(KC_M),   S(KC_C),   S(KC_V),   TD_CAPS, OS_CSFT, S(KC_K),   S(KC_L),    KC_COMM, KC_DOT, TD_QUOT},
-        {OS_CTL, OS_GUI, OS_ALT, KC_ESC, TD_ENT, KC_TAB,  KC_BSPC, TD_SPC, KC_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
+        {OS_CTL, OS_GUI, OS_ALT, KC_ESC, TD_ENT, KC_TAB,  KC_BSPC, TD_SPC, LT_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
     },
 
     /* Left shift
@@ -136,8 +150,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         {_______, KC_BTN3, KC_BTN2, KC_BTN1, _______, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_WH_D},
         {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
         {_______, _______, _______, _______, ___fn__, _______, _______, _______, ___fn__, _______, _______, _______},
-    }
+    },
 
+   /* Symbol navigation
+    * .-----------------------------------------------------------------------------------.
+    * |   {  |   .  |   *  |   &  |   }  |      |      |      | Home |  Up  |  End | PgUp |
+    * |-----------------------------------------------------------------------------------|
+    * |   (  |   ^  |   %  |   $  |   )  |      |      |      | Left | Down | Right| PgDn |
+    * |-----------------------------------------------------------------------------------|
+    * |   [  |   #  |   @  |   !  |   ]  |      |      |      |      |      |      |      |
+    * |-----------------------------------------------------------------------------------|
+    * |      |      |      |   \  |   |  |      |      |      |  f() |      |      |      |
+    * '-----------------------------------------------------------------------------------'
+    */
+    [_SYMBOL] = {
+        {KC_LCBR, KC_DOT,  KC_ASTR, KC_AMPR, TD_RCBR, _______, _______, _______, KC_HOME, KC_UP,   KC_END,  KC_PGUP},
+        {KC_LPRN, KC_CIRC, KC_PERC, KC_DLR,  TD_RPRN, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN},
+        {KC_LBRC, KC_HASH, KC_AT,   KC_EXLM, TD_RBRC, _______, _______, _______, _______, _______, _______, _______},
+        {___x___, ___x___, ___x___, KC_BSLS, KC_PIPE, ___x___, ___x___, ___fn__, ___x___, ___x___, ___x___, ___x___},
+    }
 };
 
 // register simple key press
@@ -324,9 +355,59 @@ void tap_pair(qk_tap_dance_state_t *state, uint8_t shift, uint16_t left, uint16_
   }
 }
 
+void doublequote(qk_tap_dance_state_t *state, void *user_data)
+{
+  tap_pair(state, S_ALWAYS, KC_QUOT, KC_QUOT, 0, 0);
+}
+
+void grave(qk_tap_dance_state_t *state, void *user_data)
+{
+  tap_pair(state, S_NEVER, KC_GRV, KC_GRV, 0, 0);
+}
+
+void lbrace(qk_tap_dance_state_t *state, void *user_data)
+{
+  tap_pair(state, S_NEVER, KC_LBRC, KC_RBRC, 0, 0);
+}
+
+void lcurly(qk_tap_dance_state_t *state, void *user_data)
+{
+  tap_pair(state, S_ALWAYS, KC_LBRC, KC_RBRC, 0, 0);
+}
+
+void lparen(qk_tap_dance_state_t *state, void *user_data)
+{
+  tap_pair(state, S_ALWAYS, KC_9, KC_0, KC_LCTL, 0);
+}
+
+void lparen_reset(qk_tap_dance_state_t *state, void *user_data)
+{
+  unregister_code(KC_LCTL);
+}
+
 void quote(qk_tap_dance_state_t *state, void *user_data)
 {
   tap_pair(state, S_NEVER, KC_QUOT, KC_QUOT, 0, 0);
+}
+
+void rbrace(qk_tap_dance_state_t *state, void *user_data)
+{
+  tap_pair(state, S_NEVER, KC_LBRC, KC_RBRC, 0, CLOSE);
+}
+
+void rcurly(qk_tap_dance_state_t *state, void *user_data)
+{
+  tap_pair(state, S_ALWAYS, KC_LBRC, KC_RBRC, 0, CLOSE);
+}
+
+void rparen(qk_tap_dance_state_t *state, void *user_data)
+{
+  tap_pair(state, S_ALWAYS, KC_9, KC_0, KC_LCTL, CLOSE);
+}
+
+void rparen_reset(qk_tap_dance_state_t *state, void *user_data)
+{
+  unregister_code(KC_LCTL);
 }
 
 void caps(qk_tap_dance_state_t *state, void *user_data)
@@ -341,10 +422,16 @@ void caps(qk_tap_dance_state_t *state, void *user_data)
 }
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [_CAPS] = ACTION_TAP_DANCE_FN         (caps)
-    ,[_ENT]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, enter, enter_reset)
-    ,[_SPC]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, space, space_reset)
-    ,[_QUOT] = ACTION_TAP_DANCE_FN         (quote)
+    [_CAPS] = ACTION_TAP_DANCE_FN         (caps),
+    [_ENT]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, enter, enter_reset),
+    [_SPC]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, space, space_reset),
+    [_QUOT] = ACTION_TAP_DANCE_FN         (quote),
+    [_LBRC] = ACTION_TAP_DANCE_FN         (lbrace),
+    [_LCBR] = ACTION_TAP_DANCE_FN         (lcurly),
+    [_LPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lparen, lparen_reset),
+    [_RBRC] = ACTION_TAP_DANCE_FN         (rbrace),
+    [_RCBR] = ACTION_TAP_DANCE_FN         (rcurly),
+    [_RPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rparen, rparen_reset)
 };
 
 
@@ -352,6 +439,9 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define        LEFT    1
 #define        RIGHT   2
 static uint8_t thumb = 0;
+// LEFT (KC_SPC, S(KC_BSLS)), RIGHT (KC_LEFT, S(KC_LEFT)) opposite thumb combinations, see process_record_user()
+// up,   down -> _SYMBOL
+// down, down -> _MOUSE
 #define THUMBS_DOWN _MOUSE
 
 static uint8_t overlayer = THUMBS_DOWN;
@@ -411,11 +501,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case TD_ENT:
             tap_layer(record, _LSHIFT);
             // LT (_LSHIFT, KC_ENT) left right combination layer, see tap dance enter
-            //com_layer(record, LEFT, 0, 0, _LSHIFT, _DVORAK);
+            com_layer(record, LEFT, 0, 0, _LSHIFT, _SYMBOL);
             break;
         case TD_SPC:
             tap_layer(record, _RSHIFT);
             // LT (_RSHIFT, KC_SPC) emulation, see tap dance space
+            break;
+        case LT_LEFT:
+            tap_layer(record, _SYMBOL);
+            // LT (_SYMBOL, KC_LEFT) left right combination layer
+            com_layer(record, RIGHT, 0, 0, _SYMBOL, _LSHIFT);
             break;
         case OS_ALT:
             tap_mods(record, KC_LALT);
