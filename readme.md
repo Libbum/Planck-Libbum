@@ -22,6 +22,10 @@ At the moment, it's a work in progress and probably not what you want to use.
 
 ![Shift Layers](layout/layer-shift.png)
 
+## Symbol layers
+
+![Symbol Layers](layout/layer-symbols.png)
+
 ## Mouse layers
 
 ![Mouse Layers](layout/layer-mouse.png)

@@ -14,7 +14,8 @@ enum planck_layers {
     _LSHIFT,
     _RSHIFT,
     _MOUSE,
-    _SYMBOL
+    _SYMBOL,
+    _SYMREG
 };
 
 enum planck_keycodes {
@@ -27,7 +28,13 @@ enum planck_keycodes {
     OS_GUI  = OSM(MOD_LGUI),
     OS_SALT = OSM(MOD_LALT | MOD_LSFT),
     OS_SGUI = OSM(MOD_LGUI | MOD_LSFT),
-    LT_LEFT = LT (_SYMBOL, KC_LEFT)
+    LT_LEFT = LT (_SYMBOL, KC_LEFT),
+    LT_LFTX = LT (_SYMREG, KC_LEFT),
+    PS_CIRC,   // pseudo GUI_T(S(KC_6))
+    PS_DLR,    // pseudo SFT_T(S(KC_4))
+    PS_PERC,   // pseudo ALT_T(S(KC_5))
+    PS_LPRN,   // pseudo CTL_T(S(KC_9))
+    PS_PIPE,   // pseudo LT (_MOUSE, S(KC_BSLS))
 };
 
 
@@ -48,7 +55,8 @@ enum tap_dance {
     _LPRN,
     _RBRC,
     _RCBR,
-    _RPRN
+    _RPRN,
+    _RNGL
 };
 
 #define TD_CAPS TD(_CAPS)
@@ -62,6 +70,7 @@ enum tap_dance {
 #define TD_LBRC TD(_LBRC)
 #define TD_LCBR TD(_LCBR)
 #define TD_LPRN TD(_LPRN)
+#define TD_RNGL TD(_RNGL)
 
 //Keycodes
 #define ___x___ KC_TRNS
@@ -152,23 +161,41 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         {_______, _______, _______, _______, ___fn__, _______, _______, _______, ___fn__, _______, _______, _______},
     },
 
-   /* Symbol navigation
-    * .-----------------------------------------------------------------------------------.
-    * |   {  |   .  |   *  |   &  |   }  |      |      |      | Home |  Up  |  End | PgUp |
-    * |-----------------------------------------------------------------------------------|
-    * |   (  |   ^  |   %  |   $  |   )  |      |      |      | Left | Down | Right| PgDn |
-    * |-----------------------------------------------------------------------------------|
-    * |   [  |   #  |   @  |   !  |   ]  |      |      |      |      |      |      |      |
-    * |-----------------------------------------------------------------------------------|
-    * |      |      |      |   \  |   |  |      |      |      |  f() |      |      |      |
-    * '-----------------------------------------------------------------------------------'
-    */
+    /* Symbol navigation
+     * .-----------------------------------------------------------------------------------.
+     * |   {  |   .  |   *  |   &  |   }  |      |      |      | Home |  Up  |  End | PgUp |
+     * |-----------------------------------------------------------------------------------|
+     * |   (  |   ^  |   %  |   $  |   )  |      |      |      | Left | Down | Right| PgDn |
+     * |-----------------------------------------------------------------------------------|
+     * |   [  |   #  |   @  |   !  |   ]  |      |      |      |      |      |      |      |
+     * |-----------------------------------------------------------------------------------|
+     * |      |      |      |   \  |   |  |      |      |      |  f() |      |      |      |
+     * '-----------------------------------------------------------------------------------'
+     */
     [_SYMBOL] = {
         {KC_LCBR, KC_DOT,  KC_ASTR, KC_AMPR, TD_RCBR, _______, _______, _______, KC_HOME, KC_UP,   KC_END,  KC_PGUP},
-        {KC_LPRN, KC_CIRC, KC_PERC, KC_DLR,  TD_RPRN, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN},
+        {PS_LPRN, PS_CIRC, PS_PERC, PS_DLR,  TD_RPRN, _______, _______, _______, LT_LFTX, KC_DOWN, KC_RGHT, KC_PGDN},
         {KC_LBRC, KC_HASH, KC_AT,   KC_EXLM, TD_RBRC, _______, _______, _______, _______, _______, _______, _______},
-        {___x___, ___x___, ___x___, KC_BSLS, KC_PIPE, ___x___, ___x___, ___fn__, ___x___, ___x___, ___x___, ___x___},
-    }
+        {___x___, ___x___, ___x___, KC_BSLS, PS_PIPE, ___x___, ___x___, ___fn__, ___x___, ___x___, ___x___, ___x___},
+    },
+
+    /*
+     *  .-----------------------------------------------------------------------------------.
+     *  |      |   ?  |   +  |   ~  |      |      |      |      |      |      |      |      |
+     *  |-----------------------------------------------------------------------------------|
+     *  |      |   <  |   =  |   >  |      |      |      |      |  f() |      |      |      |
+     *  |-----------------------------------------------------------------------------------|
+     *  |      |   3  |   2  |   1  |      |      |      |      |      |      |      |      |
+     *  |-----------------------------------------------------------------------------------|
+     *  |      |      |      |      |      |      |      |      |  f() |      |      |      |
+     *  '-----------------------------------------------------------------------------------'
+     */
+    [_SYMREG] = {
+        {___x___, KC_QUES, KC_PLUS, KC_TILD, ___x___, _______, _______, _______, ___x___, ___x___, ___x___, ___x___},
+        {___x___, KC_LT,   KC_EQL,  TD_RNGL, ___x___, _______, _______, _______, ___fn__, ___x___, ___x___, ___x___},
+        {___x___, KC_3,    KC_2,    KC_1,    ___x___, _______, _______, _______, _______, _______, _______, _______},
+        {___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___fn__, ___x___, ___x___, ___x___},
+    },
 };
 
 // register simple key press
@@ -205,6 +232,22 @@ bool key_press(uint16_t keycode, uint8_t shift)
         }
     }
     return false;
+}
+
+// ALT_T, CTL_T, GUI_T, SFT_T for shifted keycodes
+void mt_shift(keyrecord_t *record, uint16_t modifier, uint16_t keycode)
+{
+  if (record->event.pressed) {
+    register_code (modifier);
+    key_timer = timer_read();
+  }
+  else {
+    unregister_code (modifier);
+    if (timer_elapsed(key_timer) < TAPPING_TERM) {
+      shift_key(keycode);
+    }
+    key_timer = 0;
+  }
 }
 
 // tap dance persistant mods, see process_record_user()
@@ -311,14 +354,14 @@ void space_reset(qk_tap_dance_state_t *state, void *user_data)
 
 void symbol_pair(uint8_t shift, uint16_t left, uint16_t right)
 {
-  if (shift & S_DOUBLE) {
-    shift_key(left);
-    shift_key(right);
-  }
-  else {
-    tap_key(left);
-    tap_key(right);
-  }
+    if (shift & S_DOUBLE) {
+        shift_key(left);
+        shift_key(right);
+    }
+    else {
+        tap_key(left);
+        tap_key(right);
+    }
 }
 
 #define CLOSE 1
@@ -326,88 +369,93 @@ void symbol_pair(uint8_t shift, uint16_t left, uint16_t right)
 // tap dance symbol pairs
 void tap_pair(qk_tap_dance_state_t *state, uint8_t shift, uint16_t left, uint16_t right, uint8_t modifier, uint8_t close)
 {
-  // triple tap: left right with cursor between symbol pair a la vim :-)
-  if (state->count > 2) {
-    symbol_pair(shift, left, right);
-    tap_key(KC_LEFT);
-  }
-  // double tap: left right
-  else if (state->count > 1) {
-    symbol_pair(shift, left, right);
-  }
-  // down: modifier
-  else if (state->pressed) {
-    if (modifier) {
-      register_code(modifier);
+    // triple tap: left right with cursor between symbol pair a la vim :-)
+    if (state->count > 2) {
+        symbol_pair(shift, left, right);
+        tap_key(KC_LEFT);
     }
-  }
-  // tap: left (close: right)
-  else {
-    if (shift & S_SINGLE) {
-      shift_key(close ? right : left);
+    // double tap: left right
+    else if (state->count > 1) {
+        symbol_pair(shift, left, right);
     }
+    // down: modifier
+    else if (state->pressed) {
+        if (modifier) {
+            register_code(modifier);
+        }
+    }
+    // tap: left (close: right)
     else {
-      tap_key(close ? right : left);
+        if (shift & S_SINGLE) {
+            shift_key(close ? right : left);
+        }
+        else {
+            tap_key(close ? right : left);
+        }
     }
-  }
-  if (!modifier) {
-    reset_tap_dance(state);
-  }
+    if (!modifier) {
+        reset_tap_dance(state);
+    }
 }
 
 void doublequote(qk_tap_dance_state_t *state, void *user_data)
 {
-  tap_pair(state, S_ALWAYS, KC_QUOT, KC_QUOT, 0, 0);
+    tap_pair(state, S_ALWAYS, KC_QUOT, KC_QUOT, 0, 0);
 }
 
 void grave(qk_tap_dance_state_t *state, void *user_data)
 {
-  tap_pair(state, S_NEVER, KC_GRV, KC_GRV, 0, 0);
+    tap_pair(state, S_NEVER, KC_GRV, KC_GRV, 0, 0);
 }
 
 void lbrace(qk_tap_dance_state_t *state, void *user_data)
 {
-  tap_pair(state, S_NEVER, KC_LBRC, KC_RBRC, 0, 0);
+    tap_pair(state, S_NEVER, KC_LBRC, KC_RBRC, 0, 0);
 }
 
 void lcurly(qk_tap_dance_state_t *state, void *user_data)
 {
-  tap_pair(state, S_ALWAYS, KC_LBRC, KC_RBRC, 0, 0);
+    tap_pair(state, S_ALWAYS, KC_LBRC, KC_RBRC, 0, 0);
 }
 
 void lparen(qk_tap_dance_state_t *state, void *user_data)
 {
-  tap_pair(state, S_ALWAYS, KC_9, KC_0, KC_LCTL, 0);
+    tap_pair(state, S_ALWAYS, KC_9, KC_0, KC_LCTL, 0);
 }
 
 void lparen_reset(qk_tap_dance_state_t *state, void *user_data)
 {
-  unregister_code(KC_LCTL);
+    unregister_code(KC_LCTL);
 }
 
 void quote(qk_tap_dance_state_t *state, void *user_data)
 {
-  tap_pair(state, S_NEVER, KC_QUOT, KC_QUOT, 0, 0);
+    tap_pair(state, S_NEVER, KC_QUOT, KC_QUOT, 0, 0);
+}
+
+void rangle(qk_tap_dance_state_t *state, void *user_data)
+{
+    tap_pair(state, S_ALWAYS, KC_COMM, KC_DOT, 0, CLOSE);
 }
 
 void rbrace(qk_tap_dance_state_t *state, void *user_data)
 {
-  tap_pair(state, S_NEVER, KC_LBRC, KC_RBRC, 0, CLOSE);
+    tap_pair(state, S_NEVER, KC_LBRC, KC_RBRC, 0, CLOSE);
 }
 
 void rcurly(qk_tap_dance_state_t *state, void *user_data)
 {
-  tap_pair(state, S_ALWAYS, KC_LBRC, KC_RBRC, 0, CLOSE);
+    tap_pair(state, S_ALWAYS, KC_LBRC, KC_RBRC, 0, CLOSE);
 }
 
 void rparen(qk_tap_dance_state_t *state, void *user_data)
 {
-  tap_pair(state, S_ALWAYS, KC_9, KC_0, KC_LCTL, CLOSE);
+    tap_pair(state, S_ALWAYS, KC_9, KC_0, KC_LCTL, CLOSE);
 }
 
 void rparen_reset(qk_tap_dance_state_t *state, void *user_data)
 {
-  unregister_code(KC_LCTL);
+    unregister_code(KC_LCTL);
 }
 
 void caps(qk_tap_dance_state_t *state, void *user_data)
@@ -431,7 +479,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [_LPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lparen, lparen_reset),
     [_RBRC] = ACTION_TAP_DANCE_FN         (rbrace),
     [_RCBR] = ACTION_TAP_DANCE_FN         (rcurly),
-    [_RPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rparen, rparen_reset)
+    [_RPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rparen, rparen_reset),
+    [_RNGL] = ACTION_TAP_DANCE_FN         (rangle)
 };
 
 
@@ -520,6 +569,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case OS_GUI:
             tap_mods(record, KC_LGUI);
+            break;
+        case PS_CIRC:
+            // GUI_T(S(KC_6))
+            mt_shift(record, KC_LGUI, KC_6);
+            break;
+        case PS_DLR:
+            // SFT_T(S(KC_4))
+            mt_shift(record, KC_LSFT, KC_4);
+            break;
+        case PS_LPRN:
+            // CTL_T(S(KC_9))
+            mt_shift(record, KC_LCTL, KC_9);
+            break;
+        case PS_PERC:
+            // ALT_T(S(KC_5))
+            mt_shift(record, KC_LALT, KC_5);
+            break;
+        case PS_PIPE:
+            tap_layer(record, _MOUSE);
+            // LT (_MOUSE, S(KC_BSLS)) left right combination layer
+            com_layer(record, LEFT, KC_BSLS, SHIFT, _MOUSE, _SYMBOL);
             break;
     }
     return true;
