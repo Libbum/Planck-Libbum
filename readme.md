@@ -22,6 +22,10 @@ At the moment, it's a work in progress and probably not what you want to use.
 
 ![Shift Layers](layout/layer-shift.png)
 
+## Numeric layers
+
+![Numeric Layers](layout/layer-numeric.png)
+
 ## Symbol layers
 
 ![Symbol Layers](layout/layer-symbols.png)

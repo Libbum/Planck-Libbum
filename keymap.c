@@ -15,7 +15,9 @@ enum planck_layers {
     _RSHIFT,
     _MOUSE,
     _SYMBOL,
-    _SYMREG
+    _SYMREG,
+    _NUMBER,
+    _NUMSYM
 };
 
 enum planck_keycodes {
@@ -30,11 +32,13 @@ enum planck_keycodes {
     OS_SGUI = OSM(MOD_LGUI | MOD_LSFT),
     LT_LEFT = LT (_SYMBOL, KC_LEFT),
     LT_LFTX = LT (_SYMREG, KC_LEFT),
+    LT_A    = LT (_NUMSYM, KC_A),
+    LT_ESC  = LT (_NUMBER, KC_ESC),
     PS_CIRC,   // pseudo GUI_T(S(KC_6))
     PS_DLR,    // pseudo SFT_T(S(KC_4))
     PS_PERC,   // pseudo ALT_T(S(KC_5))
     PS_LPRN,   // pseudo CTL_T(S(KC_9))
-    PS_PIPE,   // pseudo LT (_MOUSE, S(KC_BSLS))
+    PS_PIPE    // pseudo LT (_MOUSE, S(KC_BSLS))
 };
 
 
@@ -42,6 +46,10 @@ enum planck_keycodes {
 #define S_DOWN  S(KC_DOWN)
 #define S_RGHT  S(KC_RGHT)
 #define S_UP    S(KC_UP)
+#define AT_B    ALT_T(KC_B)
+#define GT_C    GUI_T(KC_C)
+#define MT_E    MT(MOD_LCTL | MOD_LALT, KC_E)
+#define MT_X    MT(MOD_LALT | MOD_LSFT, KC_X)
 
 // tap dance keys
 enum tap_dance {
@@ -56,7 +64,8 @@ enum tap_dance {
     _RBRC,
     _RCBR,
     _RPRN,
-    _RNGL
+    _RNGL,
+    _COMM
 };
 
 #define TD_CAPS TD(_CAPS)
@@ -71,6 +80,7 @@ enum tap_dance {
 #define TD_LCBR TD(_LCBR)
 #define TD_LPRN TD(_LPRN)
 #define TD_RNGL TD(_RNGL)
+#define TD_COMM TD(_COMM)
 
 //Keycodes
 #define ___x___ KC_TRNS
@@ -97,14 +107,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         {KC_Q,   KC_D,   KC_R,   KC_W,   KC_B,   OS_CALT, OS_CGUI, KC_J,   KC_F,    KC_U,    KC_P,   KC_SCLN},
         {KC_A,   KC_S,   KC_H,   KC_T,   KC_G,   OS_SALT, OS_SGUI, KC_Y,   KC_N,    KC_E,    KC_O,   KC_I},
         {KC_Z,   KC_X,   KC_M,   KC_C,   KC_V,   TD_CAPS, OS_CSFT, KC_K,   KC_L,    KC_COMM, KC_DOT, TD_QUOT},
-        {OS_CTL, OS_GUI, OS_ALT, KC_ESC, TD_ENT, KC_TAB,  KC_BSPC, TD_SPC, LT_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
+        {OS_CTL, OS_GUI, OS_ALT, LT_ESC, TD_ENT, KC_TAB,  KC_BSPC, TD_SPC, LT_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
     },
 
     [_SHIFT] = {
         {S(KC_Q),   S(KC_D),   S(KC_R),   S(KC_W),   S(KC_B),   OS_CALT, OS_CGUI, S(KC_J),   S(KC_F),    S(KC_U),    S(KC_P),   KC_SCLN},
         {S(KC_A),   S(KC_S),   S(KC_H),   S(KC_T),   S(KC_G),   OS_SALT, OS_SGUI, S(KC_Y),   S(KC_N),    S(KC_E),    S(KC_O),   S(KC_I)},
         {S(KC_Z),   S(KC_X),   S(KC_M),   S(KC_C),   S(KC_V),   TD_CAPS, OS_CSFT, S(KC_K),   S(KC_L),    KC_COMM, KC_DOT, TD_QUOT},
-        {OS_CTL, OS_GUI, OS_ALT, KC_ESC, TD_ENT, KC_TAB,  KC_BSPC, TD_SPC, LT_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
+        {OS_CTL, OS_GUI, OS_ALT, LT_ESC, TD_ENT, KC_TAB,  KC_BSPC, TD_SPC, LT_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
     },
 
     /* Left shift
@@ -122,7 +132,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), KC_COLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
         {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, TD_DQOT},
-        {OS_CTL,  OS_GUI,  OS_ALT,  KC_ESC,  ___fn__, KC_TAB,  KC_DEL,  KC_MINS, KC_LEFT, S_DOWN,  S_UP,    S_RGHT}
+        {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  ___fn__, KC_TAB,  KC_DEL,  KC_MINS, KC_LEFT, S_DOWN,  S_UP,    S_RGHT}
     },
 
     /* Right shift
@@ -140,7 +150,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), KC_COLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
         {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, TD_DQOT},
-        {OS_CTL,  OS_GUI,  OS_ALT,  KC_ESC,  KC_UNDS, KC_TAB,  KC_BSPC, ___fn__, KC_LEFT, S_DOWN,  S_UP,    S_RGHT}
+        {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  KC_UNDS, KC_TAB,  KC_BSPC, ___fn__, KC_LEFT, S_DOWN,  S_UP,    S_RGHT}
     },
 
     /* Mouse control
@@ -196,6 +206,43 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         {___x___, KC_3,    KC_2,    KC_1,    ___x___, _______, _______, _______, _______, _______, _______, _______},
         {___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___x___, ___fn__, ___x___, ___x___, ___x___},
     },
+
+    /* Number Keypad
+     * .-----------------------------------------------------------------------------------.
+     * |      |   F  |   E  |   D  |      |      |      |   /  |   7  |   8  |   9  |   *  |
+     * |-----------------------------------------------------------------------------------|
+     * | Ctrl |   C  |   B  |   A  |      |      |      |   .  |   4  |   5  |   6  |   -  |
+     * |-----------------------------------------------------------------------------------|
+     * |      |   #  |   X  |   G  |      |      |      |   ,  |   1  |   2  |   3  |   +  |
+     * |-----------------------------------------------------------------------------------|
+     * |      |      |      |  f() |      |       |      |  0  |   =  |      |      |      |
+     * |      |      |      |  f() |      |       |      |  =  |   0  |      |      |      |
+     * '-----------------------------------------------------------------------------------'
+     */
+    [_NUMBER] = {
+        {_______, KC_F,    MT_E,    KC_D,    _______, _______, _______, KC_SLSH, KC_7,    KC_8,    KC_9,    KC_ASTR},
+        {OS_CTL,  GT_C,    AT_B,    LT_A,    _______, _______, _______, KC_DOT,  KC_4,    KC_5,    KC_6,    KC_MINS},
+        {_______, KC_HASH, MT_X,    S(KC_G), _______, _______, _______, TD_COMM, KC_1,    KC_2,    KC_3,    KC_PLUS},
+        {___x___, ___x___, ___x___, ___fn__, ___x___, ___x___, ___x___, KC_0,    KC_EQL,  ___x___, ___x___, ___x___},
+    },
+
+    /*
+     * .-----------------------------------------------------------------------------------.
+     * |      |      |      |      |      |      |      |   {  |   &  |   ?  |   :  |   }  |
+     * |-----------------------------------------------------------------------------------|
+     * |      |      |      |  f() |      |      |      |   (  |   $  |   %  |   ^  |   )  |
+     * |-----------------------------------------------------------------------------------|
+     * |      |      |      |      |      |      |      |   [  |   <  |   ~  |   >  |   ]  |
+     * |-----------------------------------------------------------------------------------|
+     * |      |      |      |  f() |      |      |      |   |  |   \  |      |      |      |
+     * '-----------------------------------------------------------------------------------'
+     */
+    [_NUMSYM] = {
+        {_______, _______, _______, ___x___, _______, _______, _______, TD_LCBR, KC_AMPR, KC_QUES, KC_COLN, KC_RCBR},
+        {___x___, ___x___, ___x___, ___fn__, _______, _______, _______, TD_LPRN, KC_DLR,  KC_PERC, KC_CIRC, KC_RPRN},
+        {_______, _______, _______, ___x___, _______, _______, _______, TD_LBRC, KC_LT,   KC_TILD, KC_GT,   KC_RBRC},
+        {___x___, ___x___, ___x___, ___fn__, ___x___, ___x___, ___x___, KC_PIPE, KC_BSLS, ___x___, ___x___, ___x___},
+    }
 };
 
 // register simple key press
@@ -237,17 +284,17 @@ bool key_press(uint16_t keycode, uint8_t shift)
 // ALT_T, CTL_T, GUI_T, SFT_T for shifted keycodes
 void mt_shift(keyrecord_t *record, uint16_t modifier, uint16_t keycode)
 {
-  if (record->event.pressed) {
-    register_code (modifier);
-    key_timer = timer_read();
-  }
-  else {
-    unregister_code (modifier);
-    if (timer_elapsed(key_timer) < TAPPING_TERM) {
-      shift_key(keycode);
+    if (record->event.pressed) {
+        register_code (modifier);
+        key_timer = timer_read();
     }
-    key_timer = 0;
-  }
+    else {
+        unregister_code (modifier);
+        if (timer_elapsed(key_timer) < TAPPING_TERM) {
+            shift_key(keycode);
+        }
+        key_timer = 0;
+    }
 }
 
 // tap dance persistant mods, see process_record_user()
@@ -458,6 +505,15 @@ void rparen_reset(qk_tap_dance_state_t *state, void *user_data)
     unregister_code(KC_LCTL);
 }
 
+void comma(qk_tap_dance_state_t *state, void *user_data)
+{
+    tap_key(KC_COMM);
+    if (state->count > 1) {
+        tap_key(KC_SPC);
+    }
+    reset_tap_dance(state);
+}
+
 void caps(qk_tap_dance_state_t *state, void *user_data)
 {
     if (state->count > 1) {
@@ -480,7 +536,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [_RBRC] = ACTION_TAP_DANCE_FN         (rbrace),
     [_RCBR] = ACTION_TAP_DANCE_FN         (rcurly),
     [_RPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rparen, rparen_reset),
-    [_RNGL] = ACTION_TAP_DANCE_FN         (rangle)
+    [_RNGL] = ACTION_TAP_DANCE_FN         (rangle),
+    [_COMM] = ACTION_TAP_DANCE_FN         (comma)
 };
 
 
@@ -555,6 +612,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case TD_SPC:
             tap_layer(record, _RSHIFT);
             // LT (_RSHIFT, KC_SPC) emulation, see tap dance space
+            break;
+        case LT_ESC:
+            tap_layer(record, _NUMBER);
             break;
         case LT_LEFT:
             tap_layer(record, _SYMBOL);
