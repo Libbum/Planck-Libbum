@@ -43,7 +43,9 @@ enum planck_keycodes {
     PS_DLR,    // pseudo SFT_T(S(KC_4))
     PS_PERC,   // pseudo ALT_T(S(KC_5))
     PS_LPRN,   // pseudo CTL_T(S(KC_9))
-    PS_PIPE    // pseudo LT (_MOUSE, S(KC_BSLS))
+    PS_LEFT,   // pseudo LT(_MOUSE, S(KC_LEFT))
+    PS_TAB,    // pseudo LT(_FNCKEY, S(KC_TAB))
+    PS_PIPE    // pseudo LT(_MOUSE, S(KC_BSLS))
 };
 
 
@@ -51,6 +53,9 @@ enum planck_keycodes {
 #define S_DOWN  S(KC_DOWN)
 #define S_RGHT  S(KC_RGHT)
 #define S_UP    S(KC_UP)
+#define AT_DOWN ALT_T(KC_DOWN)
+#define CT_RGHT CTL_T(KC_RGHT)
+#define GT_UP   GUI_T(KC_UP)
 #define AT_B    ALT_T(KC_B)
 #define GT_C    GUI_T(KC_C)
 #define MT_E    MT(MOD_LCTL | MOD_LALT, KC_E)
@@ -70,7 +75,10 @@ enum tap_dance {
     _RCBR,
     _RPRN,
     _RNGL,
-    _COMM
+    _COMM,
+    _COLN,
+    _TILD,
+    _GRV
 };
 
 #define TD_CAPS TD(_CAPS)
@@ -86,6 +94,9 @@ enum tap_dance {
 #define TD_LPRN TD(_LPRN)
 #define TD_RNGL TD(_RNGL)
 #define TD_COMM TD(_COMM)
+#define TD_COLN TD(_COLN)
+#define TD_TILD TD(_TILD)
+#define TD_GRV  TD(_GRV)
 
 //Keycodes
 #define ___x___ KC_TRNS
@@ -120,14 +131,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         {KC_Q,   KC_D,   KC_R,   KC_W,   KC_B,   OS_CALT, OS_CGUI, KC_J,   KC_F,    KC_U,    KC_P,   KC_SCLN},
         {KC_A,   KC_S,   KC_H,   KC_T,   KC_G,   OS_SALT, OS_SGUI, KC_Y,   KC_N,    KC_E,    KC_O,   KC_I},
         {KC_Z,   KC_X,   KC_M,   KC_C,   KC_V,   TD_CAPS, OS_CSFT, KC_K,   KC_L,    KC_COMM, KC_DOT, TD_QUOT},
-        {OS_CTL, OS_GUI, OS_ALT, LT_ESC, TD_ENT, LT_TAB,  LT_BSPC, TD_SPC, LT_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
+        {OS_CTL, OS_GUI, OS_ALT, LT_ESC, TD_ENT, LT_TAB,  LT_BSPC, TD_SPC, LT_LEFT, AT_DOWN, GT_UP,  CT_RGHT}
     },
 
     [_SHIFT] = {
-        {S(KC_Q),   S(KC_D),   S(KC_R),   S(KC_W),   S(KC_B),   OS_CALT, OS_CGUI, S(KC_J),   S(KC_F),    S(KC_U),    S(KC_P),   KC_SCLN},
-        {S(KC_A),   S(KC_S),   S(KC_H),   S(KC_T),   S(KC_G),   OS_SALT, OS_SGUI, S(KC_Y),   S(KC_N),    S(KC_E),    S(KC_O),   S(KC_I)},
-        {S(KC_Z),   S(KC_X),   S(KC_M),   S(KC_C),   S(KC_V),   TD_CAPS, OS_CSFT, S(KC_K),   S(KC_L),    KC_COMM, KC_DOT, TD_QUOT},
-        {OS_CTL, OS_GUI, OS_ALT, LT_ESC, TD_ENT, LT_TAB,  LT_BSPC, TD_SPC, LT_LEFT, KC_DOWN, KC_UP,  KC_RGHT}
+        {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), KC_SCLN},
+        {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
+        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_COMM, KC_DOT,  TD_QUOT},
+        {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  TD_ENT,  LT_TAB,  LT_BSPC, TD_SPC,  LT_LEFT, AT_DOWN, GT_UP,   CT_RGHT}
     },
 
     /* Left shift
@@ -142,10 +153,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * `-----------------------------------------------------------------------------------'
      */
     [_LSHIFT] = {
-        {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), KC_COLN},
+        {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), TD_COLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
         {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, TD_DQOT},
-        {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  ___fn__, KC_TAB,  KC_DEL,  KC_MINS, KC_LEFT, S_DOWN,  S_UP,    S_RGHT}
+        {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  ___fn__, LT_TAB,  KC_DEL,  KC_MINS, PS_LEFT, S_DOWN,  S_UP,    S_RGHT}
     },
 
     /* Right shift
@@ -160,10 +171,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * `-----------------------------------------------------------------------------------'
      */
     [_RSHIFT] = {
-        {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), KC_COLN},
+        {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), TD_COLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
-        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, TD_DQOT},
-        {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  KC_UNDS, KC_TAB,  KC_BSPC, ___fn__, KC_LEFT, S_DOWN,  S_UP,    S_RGHT}
+        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), TD_TILD, TD_GRV, TD_DQOT},
+        {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  KC_UNDS, PS_TAB,  LT_BSPC, ___fn__, PS_LEFT, S_DOWN,  S_UP,    S_RGHT}
     },
 
     /* Mouse control
@@ -229,7 +240,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |      |   #  |   X  |   G  |      |      |      |   ,  |   1  |   2  |   3  |   +  |
      * |-----------------------------------------------------------------------------------|
      * |      |      |      |  f() |      |       |      |  0  |   =  |      |      |      |
-     * |      |      |      |  f() |      |       |      |  =  |   0  |      |      |      |
      * '-----------------------------------------------------------------------------------'
      */
     [_NUMBER] = {
@@ -376,6 +386,30 @@ void modifier(void (*f)(uint8_t))
 }
 
 static uint8_t dt_shift = 0;
+
+void tilde(qk_tap_dance_state_t *state, void *user_data)
+{
+  // double tap plus down: repeating keycode
+  if (state->count > 2) {
+    register_code(KC_LSFT);
+    register_code(KC_GRV);
+  }
+  // tap: keycode
+  else {
+    shift_key(KC_GRV);
+    // double tap: unix home directory
+    if (state->count > 1) {
+      tap_key(KC_SLSH);
+    }
+  }
+}
+
+void tilde_reset(qk_tap_dance_state_t *state, void *user_data)
+{
+  unregister_code(KC_GRV);
+  unregister_code(KC_LSFT);
+}
+
 
 // tap dance LT (LAYER, KEY) emulation with <KEY><DOWN> -> <KEY><SHIFT> and auto-repeat extensions!
 void tap_shift(qk_tap_dance_state_t *state, uint16_t keycode, uint8_t layer)
@@ -555,6 +589,22 @@ void rparen_reset(qk_tap_dance_state_t *state, void *user_data)
     unregister_code(KC_LCTL);
 }
 
+
+void colon(qk_tap_dance_state_t *state, void *user_data)
+{
+    if (state->count > 1) {
+        tap_key(KC_SPC);
+        shift_key(KC_SCLN);
+        shift_key(KC_SCLN);
+        tap_key(KC_SPC);
+    }
+    else {
+        shift_key(KC_SCLN);
+    }
+    reset_tap_dance(state);
+}
+
+
 void comma(qk_tap_dance_state_t *state, void *user_data)
 {
     tap_key(KC_COMM);
@@ -588,7 +638,10 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [_RCBR] = ACTION_TAP_DANCE_FN         (rcurly),
     [_RPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rparen, rparen_reset),
     [_RNGL] = ACTION_TAP_DANCE_FN         (rangle),
-    [_COMM] = ACTION_TAP_DANCE_FN         (comma)
+    [_COMM] = ACTION_TAP_DANCE_FN         (comma),
+    [_COLN] = ACTION_TAP_DANCE_FN         (colon),
+    [_TILD] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, tilde, tilde_reset),
+    [_GRV]  = ACTION_TAP_DANCE_FN         (grave)
 };
 
 
@@ -631,7 +684,21 @@ void com_layer(keyrecord_t *record, uint8_t side, uint16_t keycode, uint8_t shif
     }
 }
 
-
+// LT for S(keycode)
+void lt_shift(keyrecord_t *record, uint16_t keycode, uint8_t layer)
+{
+  if (record->event.pressed) {
+    layer_on(layer);
+    key_timer = timer_read();
+  }
+  else {
+    layer_off(layer);
+    // for shifted keycodes, hence, LT_SHIFT
+    key_press(keycode, SHIFT);
+    clear_mods();
+    key_timer = 0;
+  }
+}
 
 // set layer asap to overcome macro latency errors, notably tap dance and LT usage
 // this routine inexplicably (?) sets layer_on() faster than can be done in com_layer()
@@ -648,12 +715,14 @@ void tap_layer(keyrecord_t *record, uint8_t layer)
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case BASE:
-            if (record->event.pressed) {
-                print("mode just switched to Workman and this is a huge string\n");
-                set_single_persistent_default_layer(_BASE);
-            }
-            return false;
+        case AT_DOWN:
+            tap_mods(record, KC_LALT);
+            break;
+        case CT_RGHT:
+            tap_mods(record, KC_LCTL);
+            break;
+        case GT_UP:
+            tap_mods(record, KC_LGUI);
             break;
         case TD_ENT:
             tap_layer(record, _LSHIFT);
@@ -696,6 +765,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case PS_PERC:
             // ALT_T(S(KC_5))
             mt_shift(record, KC_LALT, KC_5);
+            break;
+        case PS_LEFT:
+            tap_layer(record, _MOUSE);
+            // LT (_MOUSE, S(KC_LEFT)) left right combination layer
+            com_layer(record, RIGHT, KC_LEFT, SHIFT, _MOUSE, _LSHIFT);
+            break;
+        case PS_TAB:
+            // LT (_FNCKEY, S(KC_TAB)) emulation
+            lt_shift(record, KC_TAB, _FNCKEY);
             break;
         case PS_PIPE:
             tap_layer(record, _MOUSE);
