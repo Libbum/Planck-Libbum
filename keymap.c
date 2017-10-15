@@ -530,6 +530,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [_ENT]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, enter, enter_reset),
     [_SPC]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, space, space_reset),
     [_QUOT] = ACTION_TAP_DANCE_FN         (quote),
+    [_DQOT] = ACTION_TAP_DANCE_FN         (doublequote),
     [_LBRC] = ACTION_TAP_DANCE_FN         (lbrace),
     [_LCBR] = ACTION_TAP_DANCE_FN         (lcurly),
     [_LPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lparen, lparen_reset),
