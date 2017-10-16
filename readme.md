@@ -27,6 +27,10 @@ May investigate some ideas [ojbucao](https://github.com/ojbucao/Workman/tree/mas
 
 ![Symbol Layers](layout/layer-symbols.png)
 
+## Function layers
+
+![Function Layers](layout/layer-functions.png)
+
 ## Mouse layers
 
 ![Mouse Layers](layout/layer-mouse.png)
