@@ -4,11 +4,8 @@
 
 Working from the [default configuration](https://github.com/qmk/qmk_firmware/tree/master/keyboards/planck/keymaps/default) of the QMK firmware, this layout will at some stage in the future be used for my Planck.
 
-Inspiration from [sdothum](https://github.com/sdothum/dotfiles/tree/master/qmk_firmware/qmk_firmware/keyboards/planck/keymaps/sdothum) and [ojbucao](https://github.com/ojbucao/Workman/tree/master/mac).
-
-# Layout
-
-At the moment, it's a work in progress and probably not what you want to use.
+Strongly influenced by [sdothum](https://github.com/sdothum/dotfiles/tree/master/qmk_firmware/qmk_firmware/keyboards/planck/keymaps/sdothum).
+May investigate some ideas [ojbucao](https://github.com/ojbucao/Workman/tree/master/mac) in the future.
 
 ## Legend
 
@@ -36,6 +33,10 @@ At the moment, it's a work in progress and probably not what you want to use.
 
 # Building
 
-`sudo make planck-rev4-libbum-dfu` from the `qmk_firmware` directory.
+`sudo make planck/rev4:libbum:dfu` from the `qmk_firmware` directory.
 
+# Unfinished Features / TODO
+
+* [ ] Unicode aware, Swedish extra characters and common math symbols
+* [ ] Latex and other common programming macros
 
