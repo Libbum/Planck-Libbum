@@ -13,6 +13,7 @@ enum planck_layers {
     _SHIFT,
     _LSHIFT,
     _RSHIFT,
+    _ALPHA,
     _NUMBER,
     _NUMSYM,
     _SYMBOL,
@@ -40,7 +41,7 @@ enum planck_keycodes {
     OS_ALT  = OSM(MOD_LALT),
     OS_CALT = OSM(MOD_LALT | MOD_LCTL),
     OS_CGUI = OSM(MOD_LGUI | MOD_LCTL),
-    OS_CSFT = OSM(MOD_LSFT | MOD_LCTL),
+    OS_CSFT = OSL(_ALPHA), /* OSM(MOD_LSFT | MOD_LCTL), */
     OS_CTL  = OSM(MOD_LCTL),
     OS_GUI  = OSM(MOD_LGUI),
     OS_SALT = OSM(MOD_LALT | MOD_LSFT),
@@ -177,6 +178,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  KC_UNDS, PS_TAB,  LT_BSPC, ___fn__, PS_LEFT, S_DOWN,  S_UP,    S_RGHT}
     },
 
+    /* Alpha
+     * .-----------------------------------------------------------------------------------.
+     * |   θ  |   δ  |   ρ  |   ω  |   β  |      |      |   ς  |   φ  |   υ  |   π  |      |
+     * |-----------------------------------------------------------------------------------|
+     * |   α  |   σ  |   η  |   τ  |   γ  |      |      |   ψ  |   ν  |   ε  |   ο  |   ι  |
+     * |-----------------------------------------------------------------------------------|
+     * |   ζ  |   χ  |   μ  |   ξ  |      |      |      |   κ  |   λ  |   å  |   ä  |   ö  |
+     * |-----------------------------------------------------------------------------------|
+     * |      |      |      |      |      |      |      |      |      |      |      |      |
+     * '-----------------------------------------------------------------------------------'
+     */
+    [_ALPHA] = {
+        {UC(0x03B8), UC(0x03B4), UC(0x03C1), UC(0x03C9), UC(0x03B2), _______, _______, UC(0x03c2), UC(0x03c6), UC(0x03c5), UC(0x03c0), _______},
+        {UC(0x03b1), UC(0x03c3), UC(0x03b7), UC(0x03c4), UC(0x03b3), _______, _______, UC(0x03c8), UC(0x03bd), UC(0x03b5), UC(0x03bf), UC(0x03b9)},
+        {UC(0x03b6), UC(0x03c7), UC(0x03bc), UC(0x03be), _______,  _______, _______, UC(0x03ba), UC(0x03bb), UC(0xe5), UC(0xe4), UC(0xf6)},
+        {___x___,  ___x___,  ___x___,  ___x___,  ___x___,  ___x___, ___x___, ___x___,  ___x___,  ___x___,  ___x___,  ___x___},
+    },
+
     /* Numpad
      * .-----------------------------------------------------------------------------------.
      * |      |   F  |   E  |   D  |      |      |      |   /  |   7  |   8  |   9  |   *  |
@@ -185,7 +204,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-----------------------------------------------------------------------------------|
      * |      |   #  |   X  |   G  |      |      |      |   ,  |   1  |   2  |   3  |   +  |
      * |-----------------------------------------------------------------------------------|
-     * |      |      |      |  f() |      |       |      |  0  |   =  |      |      |      |
+     * |      |      |      |  f() |      |      |      |   0  |   =  |      |      |      |
      * '-----------------------------------------------------------------------------------'
      */
     [_NUMBER] = {
@@ -833,6 +852,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 
 void matrix_init_user(void)
 {
+    set_unicode_input_mode(UC_LNX);
 #ifdef AUDIO_ENABLE
     startup_user();
 #endif
