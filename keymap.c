@@ -570,14 +570,14 @@ void symbol_pair(uint8_t shift, uint16_t left, uint16_t right)
 /* tap dance symbol pairs */
 void tap_pair(qk_tap_dance_state_t *state, uint8_t shift, uint16_t left, uint16_t right, uint8_t modifier, uint8_t close)
 {
-    /* triple tap: left right with cursor between symbol pair */
+    /* triple tap: left right */
     if (state->count > 2) {
         symbol_pair(shift, left, right);
-        tap_key(KC_LEFT);
     }
-    /* double tap: left right */
+    /* double tap: left right with cursor between symbol pair */
     else if (state->count > 1) {
         symbol_pair(shift, left, right);
+        tap_key(KC_LEFT);
     }
     /* down: modifier */
     else if (state->pressed) {
