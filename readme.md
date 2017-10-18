@@ -19,6 +19,10 @@ May investigate some ideas [ojbucao](https://github.com/ojbucao/Workman/tree/mas
 
 ![Shift Layers](layout/layer-shift.png)
 
+## Alpha layers
+
+![Alpha Layers](layout/layer-alpha.png)
+
 ## Numeric layers
 
 ![Numeric Layers](layout/layer-numeric.png)
