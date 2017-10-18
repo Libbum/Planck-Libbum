@@ -13,6 +13,8 @@ enum planck_layers {
     _SHIFT,
     _LSHIFT,
     _RSHIFT,
+    _ALPHA,
+    _SALPHA,
     _NUMBER,
     _NUMSYM,
     _SYMBOL,
@@ -40,7 +42,7 @@ enum planck_keycodes {
     OS_ALT  = OSM(MOD_LALT),
     OS_CALT = OSM(MOD_LALT | MOD_LCTL),
     OS_CGUI = OSM(MOD_LGUI | MOD_LCTL),
-    OS_CSFT = OSM(MOD_LSFT | MOD_LCTL),
+   /* OS_CSFT = OSM(MOD_LSFT | MOD_LCTL), */
     OS_CTL  = OSM(MOD_LCTL),
     OS_GUI  = OSM(MOD_LGUI),
     OS_SALT = OSM(MOD_LALT | MOD_LSFT),
@@ -77,7 +79,8 @@ enum tap_dance {
     _RNGL,
     _RPRN,
     _SPC,
-    _TILD
+    _TILD,
+    _ALPH
 };
 
 #define TD_CAPS TD(_CAPS)
@@ -97,6 +100,7 @@ enum tap_dance {
 #define TD_RPRN TD(_RPRN)
 #define TD_SPC  TD(_SPC)
 #define TD_TILD TD(_TILD)
+#define TD_ALPH TD(_ALPH)
 
 /* keycodes */
 #define ___x___ KC_TRNS
@@ -122,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |------+------+------+------+------+-------------+------+------+------+------+------|
      * |   A  |   S  |   H  |   T  |   G  | ↑Alt | ↑GUI |   Y  |   N  |   E  |   O  |   I  |
      * |------+------+------+------+------+------|------+------+------+------+------+------|
-     * |   Z  |   X  |   M  |   C  |   V  | Shift|^Shift|   K  |   L  |   ,  |   .  |   '  |
+     * |   Z  |   X  |   M  |   C  |   V  | Shift| Alpha|   K  |   L  |   ,  |   .  |   '  |
      * |------+------+------+------+------+------+------+------+------+------+------+------|
      * | Ctrl |  GUI |  Alt |  Esc | Enter|  Tab | BkSp | Space| Left | Down |  Up  |Right |
      * `-----------------------------------------------------------------------------------'
@@ -130,14 +134,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = {
         {KC_Q,   KC_D,   KC_R,   KC_W,   KC_B,   OS_CALT, OS_CGUI, KC_J,   KC_F,    KC_U,    KC_P,   KC_SCLN},
         {KC_A,   KC_S,   KC_H,   KC_T,   KC_G,   OS_SALT, OS_SGUI, KC_Y,   KC_N,    KC_E,    KC_O,   KC_I},
-        {KC_Z,   KC_X,   KC_M,   KC_C,   KC_V,   TD_CAPS, OS_CSFT, KC_K,   KC_L,    KC_COMM, KC_DOT, TD_QUOT},
+        {KC_Z,   KC_X,   KC_M,   KC_C,   KC_V,   TD_CAPS, TD_ALPH, KC_K,   KC_L,    KC_COMM, KC_DOT, TD_QUOT},
         {OS_CTL, OS_GUI, OS_ALT, LT_ESC, TD_ENT, LT_TAB,  LT_BSPC, TD_SPC, LT_LEFT, AT_DOWN, GT_UP,  CT_RGHT}
     },
 
     [_SHIFT] = {
         {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), KC_SCLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
-        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_COMM, KC_DOT,  TD_QUOT},
+        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, TD_ALPH, S(KC_K), S(KC_L), KC_COMM, KC_DOT,  TD_QUOT},
         {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  TD_ENT,  LT_TAB,  LT_BSPC, TD_SPC,  LT_LEFT, AT_DOWN, GT_UP,   CT_RGHT}
     },
 
@@ -147,7 +151,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |------+------+------+------+------+-------------+------+------+------+------+------|
      * |   A  |   S  |   H  |   T  |   G  | ↑Alt | ↑GUI |   Y  |   N  |   E  |   O  |   I  |
      * |------+------+------+------+------+------|------+------+------+------+------+------|
-     * |   Z  |   X  |   M  |   C  |   V  | Caps |^Shift|   K  |   L  |   /  |   ?  |   "  |
+     * |   Z  |   X  |   M  |   C  |   V  | Caps | Alpha|   K  |   L  |   /  |   ?  |   "  |
      * |------+------+------+------+------+------+------+------+------+------+------+------|
      * | Ctrl |  GUI |  Alt |  Esc |  f() |  Tab |  Del |   -  | Left | Down |  Up  |Right |
      * `-----------------------------------------------------------------------------------'
@@ -155,7 +159,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_LSHIFT] = {
         {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), TD_COLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
-        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, TD_DQOT},
+        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, TD_ALPH, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, TD_DQOT},
         {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  ___fn__, LT_TAB,  KC_DEL,  KC_MINS, PS_LEFT, S_DOWN,  S_UP,    S_RGHT}
     },
 
@@ -165,7 +169,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |------+------+------+------+------+-------------+------+------+------+------+------|
      * |   A  |   S  |   H  |   T  |   G  | ↑Alt | ↑GUI |   Y  |   N  |   E  |   O  |   I  |
      * |------+------+------+------+------+------|------+------+------+------+------+------|
-     * |   Z  |   X  |   M  |   C  |   V  | Caps |^Shift|   K  |   L  |   ~  |   `  |   "  |
+     * |   Z  |   X  |   M  |   C  |   V  | Caps | Alpha|   K  |   L  |   ~  |   `  |   "  |
      * |------+------+------+------+------+------+------+------+------+------+------+------|
      * | Ctrl |  GUI |  Alt |  Esc |   _  |  Tab | BkSp |  f() | Left | Down |  Up  |Right |
      * `-----------------------------------------------------------------------------------'
@@ -173,8 +177,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_RSHIFT] = {
         {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), TD_COLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
-        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, OS_CSFT, S(KC_K), S(KC_L), TD_TILD, TD_GRV, TD_DQOT},
+        {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, TD_ALPH, S(KC_K), S(KC_L), TD_TILD, TD_GRV, TD_DQOT},
         {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  KC_UNDS, PS_TAB,  LT_BSPC, ___fn__, PS_LEFT, S_DOWN,  S_UP,    S_RGHT}
+    },
+
+    /* Alpha
+     * .-----------------------------------------------------------------------------------.
+     * |   θ  |   δ  |   ρ  |   ω  |   β  |      |      |   ς  |   φ  |   υ  |   π  |      |
+     * |-----------------------------------------------------------------------------------|
+     * |   α  |   σ  |   η  |   τ  |   γ  |      |      |   ψ  |   ν  |   ε  |   ο  |   ι  |
+     * |-----------------------------------------------------------------------------------|
+     * |   ζ  |   χ  |   μ  |   ξ  |      |      |      |   κ  |   λ  |   å  |   ä  |   ö  |
+     * |-----------------------------------------------------------------------------------|
+     * |      |      |      |      |      |      |      |      |      |      |      |      |
+     * '-----------------------------------------------------------------------------------'
+     */
+    [_ALPHA] = {
+        {UC(0x03B8), UC(0x03B4), UC(0x03C1), UC(0x03C9), UC(0x03B2), _______, _______, UC(0x03C2), UC(0x03C6), UC(0x03C5), UC(0x03C0), _______},
+        {UC(0x03B1), UC(0x03C3), UC(0x03B7), UC(0x03C4), UC(0x03B3), _______, _______, UC(0x03C8), UC(0x03BD), UC(0x03B5), UC(0x03Bf), UC(0x03B9)},
+        {UC(0x03B6), UC(0x03C7), UC(0x03BC), UC(0x03BE), _______,    _______, _______, UC(0x03BA), UC(0x03BB), UC(0xE5),   UC(0xE4),   UC(0xF6)},
+        {___x___,     ___x___,   ___x___,    ___x___,    ___x___,    ___x___, ___x___, ___x___,    ___x___,    ___x___,    ___x___,    ___x___},
+    },
+
+    /* Shifted Alpha
+     * .-----------------------------------------------------------------------------------.
+     * |   Θ  |   Δ  |   Ρ  |   Ω  |   Β  |      |      |   Σ  |   Φ  |   Υ  |   Π  |      |
+     * |-----------------------------------------------------------------------------------|
+     * |   Α  |   Σ  |   Η  |   Τ  |   Γ  |      |      |   Ψ  |   Ν  |   Ε  |   Ο  |   Ι  |
+     * |-----------------------------------------------------------------------------------|
+     * |   Ζ  |   Χ  |   Μ  |   Ξ  |      |      |      |   Κ  |   Λ  |   Å  |   Ä  |   Ö  |
+     * |-----------------------------------------------------------------------------------|
+     * |      |      |      |      |      |      |      |      |      |      |      |      |
+     * '-----------------------------------------------------------------------------------'
+     */
+    [_SALPHA] = {
+        {UC(0x0398), UC(0x0394), UC(0x03A1), UC(0x03A9), UC(0x0392), _______, _______, UC(0x03A3), UC(0x03A6), UC(0x03A5), UC(0x03A0), _______},
+        {UC(0x0391), UC(0x03A3), UC(0x0397), UC(0x03A4), UC(0x0393), _______, _______, UC(0x03A8), UC(0x039D), UC(0x0395), UC(0x039F), UC(0x0399)},
+        {UC(0x0396), UC(0x03A7), UC(0x039C), UC(0x039E), _______,    _______, _______, UC(0x039A), UC(0x039B), UC(0xC5),   UC(0xC4),   UC(0xD6)},
+        {___x___,     ___x___,   ___x___,    ___x___,    ___x___,    ___x___, ___x___, ___x___,    ___x___,    ___x___,    ___x___,    ___x___},
     },
 
     /* Numpad
@@ -185,7 +225,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-----------------------------------------------------------------------------------|
      * |      |   #  |   X  |   G  |      |      |      |   ,  |   1  |   2  |   3  |   +  |
      * |-----------------------------------------------------------------------------------|
-     * |      |      |      |  f() |      |       |      |  0  |   =  |      |      |      |
+     * |      |      |      |  f() |      |      |      |   0  |   =  |      |      |      |
      * '-----------------------------------------------------------------------------------'
      */
     [_NUMBER] = {
@@ -504,6 +544,7 @@ void space_reset(qk_tap_dance_state_t *state, void *user_data)
     tap_reset(KC_SPC, _RSHIFT);
 }
 
+
 /* Tap Dance Pairs ---------------------------------------------------------- */
 
 /* tap dance shift rules */
@@ -618,6 +659,21 @@ void rparen_reset(qk_tap_dance_state_t *state, void *user_data)
     unregister_code(KC_LCTL);
 }
 
+void alpha(qk_tap_dance_state_t *state, void *user_data)
+{
+    if (state->count > 1) {
+        set_oneshot_layer(_SALPHA, ONESHOT_START);
+    }
+    else {
+        set_oneshot_layer(_ALPHA, ONESHOT_START);
+    }
+}
+
+void alpha_reset(qk_tap_dance_state_t *state, void *user_data)
+{
+    clear_oneshot_layer_state(ONESHOT_PRESSED);
+}
+
 /* Tap Dance Insert --------------------------------------------------------- */
 
 void colon(qk_tap_dance_state_t *state, void *user_data)
@@ -657,6 +713,7 @@ void caps(qk_tap_dance_state_t *state, void *user_data)
     reset_tap_dance(state);
 }
 
+
 qk_tap_dance_action_t tap_dance_actions[] = {
     [_CAPS] = ACTION_TAP_DANCE_FN(caps),
     [_COLN] = ACTION_TAP_DANCE_FN(colon),
@@ -669,6 +726,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [_RBRC] = ACTION_TAP_DANCE_FN(rbrace),
     [_RCBR] = ACTION_TAP_DANCE_FN(rcurly),
     [_RNGL] = ACTION_TAP_DANCE_FN(rangle),
+    [_ALPH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, alpha, alpha_reset),
     [_LPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lparen, lparen_reset),
     [_ENT]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, enter, enter_reset),
     [_RPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rparen, rparen_reset),
@@ -833,6 +891,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 
 void matrix_init_user(void)
 {
+    set_unicode_input_mode(UC_LNX);
 #ifdef AUDIO_ENABLE
     startup_user();
 #endif
