@@ -65,7 +65,6 @@ enum planck_keycodes {
 /* tap dance keys */
 enum tap_dance {
     _CAPS = 0,
-    _COLN,
     _COMM,
     _DQOT,
     _ENT,
@@ -84,7 +83,6 @@ enum tap_dance {
 };
 
 #define TD_CAPS TD(_CAPS)
-#define TD_COLN TD(_COLN)
 #define TD_COMM TD(_COMM)
 #define TD_PERC TD(_PERC)
 #define TD_DQOT TD(_DQOT)
@@ -157,7 +155,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * `-----------------------------------------------------------------------------------'
      */
     [_LSHIFT] = {
-        {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), TD_COLN},
+        {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), KC_COLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
         {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, TD_ALPH, S(KC_K), S(KC_L), KC_SLSH, KC_QUES, TD_DQOT},
         {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  ___fn__, LT_TAB,  KC_DEL,  KC_MINS, PS_LEFT, S_DOWN,  S_UP,    S_RGHT}
@@ -175,7 +173,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * `-----------------------------------------------------------------------------------'
      */
     [_RSHIFT] = {
-        {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), TD_COLN},
+        {S(KC_Q), S(KC_D), S(KC_R), S(KC_W), S(KC_B), OS_CALT, OS_CGUI, S(KC_J), S(KC_F), S(KC_U), S(KC_P), KC_COLN},
         {S(KC_A), S(KC_S), S(KC_H), S(KC_T), S(KC_G), OS_SALT, OS_SGUI, S(KC_Y), S(KC_N), S(KC_E), S(KC_O), S(KC_I)},
         {S(KC_Z), S(KC_X), S(KC_M), S(KC_C), S(KC_V), TD_CAPS, TD_ALPH, S(KC_K), S(KC_L), TD_TILD, TD_GRV, TD_DQOT},
         {OS_CTL,  OS_GUI,  OS_ALT,  LT_ESC,  KC_UNDS, PS_TAB,  LT_BSPC, ___fn__, PS_LEFT, S_DOWN,  S_UP,    S_RGHT}
@@ -676,20 +674,6 @@ void alpha_reset(qk_tap_dance_state_t *state, void *user_data)
 
 /* Tap Dance Insert --------------------------------------------------------- */
 
-void colon(qk_tap_dance_state_t *state, void *user_data)
-{
-    if (state->count > 1) {
-        tap_key(KC_SPC);
-        shift_key(KC_SCLN);
-        shift_key(KC_SCLN);
-        tap_key(KC_SPC);
-    }
-    else {
-        shift_key(KC_SCLN);
-    }
-    reset_tap_dance(state);
-}
-
 void comma(qk_tap_dance_state_t *state, void *user_data)
 {
     tap_key(KC_COMM);
@@ -716,7 +700,6 @@ void caps(qk_tap_dance_state_t *state, void *user_data)
 
 qk_tap_dance_action_t tap_dance_actions[] = {
     [_CAPS] = ACTION_TAP_DANCE_FN(caps),
-    [_COLN] = ACTION_TAP_DANCE_FN(colon),
     [_COMM] = ACTION_TAP_DANCE_FN(comma),
     [_DQOT] = ACTION_TAP_DANCE_FN(doublequote),
     [_GRV]  = ACTION_TAP_DANCE_FN(grave),
