@@ -79,7 +79,8 @@ enum tap_dance {
     _RPRN,
     _SPC,
     _TILD,
-    _ALPH
+    _ALPH,
+    _PRIV
 };
 
 #define TD_CAPS TD(_CAPS)
@@ -99,6 +100,7 @@ enum tap_dance {
 #define TD_SPC  TD(_SPC)
 #define TD_TILD TD(_TILD)
 #define TD_ALPH TD(_ALPH)
+#define TD_PRIV TD(_PRIV) /* compile time macro string, provided in private_string.h */
 
 /* keycodes */
 #define ___x___ KC_TRNS
@@ -327,7 +329,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * .-----------------------------------------------------------------------------------.
      * |      |      | Copy | Paste|      |      |      |      |      |      |      |      |
      * |--------------------------------------------------------------+------+------+------|
-     * | Undo |  Cut | Copy | Paste|      |      |      |      |      |      |      |      |
+     * | Undo |  Cut | Copy | Paste|      |      |      |      | PRIV |      |      |      |
      * |-----------------------------------------------------------------------------------|
      * |      |      |  Nak |  Eot |      |      |      |      |      |      |      |      |
      * |-----------------------------------------------------------------------------------|
@@ -336,7 +338,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_EDIT] = {
         {_______, _______, TMCOPY,  TMPASTE, _______, _______, _______, _______, _______, _______, _______, _______},
-        {UNDO,    CUT,     COPY,    PASTE,   _______, _______, _______, _______, _______, _______, _______, _______},
+        {UNDO,    CUT,     COPY,    PASTE,   _______, _______, _______, _______, TD_PRIV, _______, _______, _______},
         {_______, _______, NAK,     EOT,     _______, _______, _______, _______, _______, _______, _______, _______},
         {_______, _______, _______, _______, _______, _______, ___fn__, _______, _______, _______, _______, _______},
     },
@@ -683,6 +685,16 @@ void comma(qk_tap_dance_state_t *state, void *user_data)
     reset_tap_dance(state);
 }
 
+/* compile time macro string, see functions/hardware planck script */
+void private(qk_tap_dance_state_t *state, void *user_data)
+{
+  if (state->count > 1) {
+#ifdef PRIVATE_STRING
+#include "private_string.h"
+#endif
+  }
+  reset_tap_dance(state);
+}
 
 /* Tap Dance Toggle --------------------------------------------------------- */
 
@@ -709,6 +721,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [_RBRC] = ACTION_TAP_DANCE_FN(rbrace),
     [_RCBR] = ACTION_TAP_DANCE_FN(rcurly),
     [_RNGL] = ACTION_TAP_DANCE_FN(rangle),
+    [_PRIV] = ACTION_TAP_DANCE_FN(private),
     [_ALPH] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, alpha, alpha_reset),
     [_LPRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lparen, lparen_reset),
     [_ENT]  = ACTION_TAP_DANCE_FN_ADVANCED(NULL, enter, enter_reset),

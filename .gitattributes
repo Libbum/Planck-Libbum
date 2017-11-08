@@ -1,0 +1,2 @@
+#pattern  filter=crypt diff=crypt
+private_string.h  filter=crypt diff=crypt
