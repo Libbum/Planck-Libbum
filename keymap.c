@@ -66,6 +66,7 @@ enum planck_keycodes {
 enum tap_dance {
     _CAPS = 0,
     _COMM,
+    _DOT,
     _DQOT,
     _ENT,
     _GRV,
@@ -85,6 +86,7 @@ enum tap_dance {
 
 #define TD_CAPS TD(_CAPS)
 #define TD_COMM TD(_COMM)
+#define TD_DOT  TD(_DOT)
 #define TD_PERC TD(_PERC)
 #define TD_DQOT TD(_DQOT)
 #define TD_ENT  TD(_ENT)
@@ -230,7 +232,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_NUMBER] = {
         {_______, KC_F,    MT_E,    KC_D,    _______, _______, _______, KC_SLSH, KC_7,    KC_8,    KC_9,    KC_ASTR},
-        {OS_CTL,  GT_C,    AT_B,    LT_A,    _______, _______, _______, KC_DOT,  KC_4,    KC_5,    KC_6,    KC_MINS},
+        {OS_CTL,  GT_C,    AT_B,    LT_A,    _______, _______, _______, TD_DOT,  KC_4,    KC_5,    KC_6,    KC_MINS},
         {_______, KC_HASH, MT_X,    KC_G,    _______, _______, _______, TD_COMM, KC_1,    KC_2,    KC_3,    KC_PLUS},
         {___x___, ___x___, ___x___, ___fn__, ___x___, ___x___, ___x___, KC_0,    KC_EQL,  ___x___, ___x___, ___x___},
     },
@@ -685,6 +687,16 @@ void comma(qk_tap_dance_state_t *state, void *user_data)
     reset_tap_dance(state);
 }
 
+void dot(qk_tap_dance_state_t *state, void *user_data)
+{
+    if (state->count > 1) {
+        shift_key(KC_COLN);
+    } else {
+        tap_key(KC_DOT);
+    }
+    reset_tap_dance(state);
+}
+
 /* compile time macro string, see functions/hardware planck script */
 void private(qk_tap_dance_state_t *state, void *user_data)
 {
@@ -713,6 +725,7 @@ void caps(qk_tap_dance_state_t *state, void *user_data)
 qk_tap_dance_action_t tap_dance_actions[] = {
     [_CAPS] = ACTION_TAP_DANCE_FN(caps),
     [_COMM] = ACTION_TAP_DANCE_FN(comma),
+    [_DOT]  = ACTION_TAP_DANCE_FN(dot),
     [_DQOT] = ACTION_TAP_DANCE_FN(doublequote),
     [_GRV]  = ACTION_TAP_DANCE_FN(grave),
     [_LBRC] = ACTION_TAP_DANCE_FN(lbrace),
