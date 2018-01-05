@@ -26,7 +26,6 @@ enum planck_layers {
 
 enum planck_keycodes {
     BASE = SAFE_RANGE,
-    PS_CIRC,   /* pseudo GUI_T(S(KC_6)) */
     PS_DLR,    /* pseudo SFT_T(S(KC_4)) */
     PS_PERC,   /* pseudo ALT_T(S(KC_5)) */
     PS_LPRN,   /* pseudo CTL_T(S(KC_9)) */
@@ -268,7 +267,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_SYMBOL] = {
         {KC_LCBR, KC_DOT,  KC_ASTR, KC_AMPR, TD_RCBR, _______, _______, _______, KC_HOME, KC_UP,   KC_END,  KC_PGUP},
-        {PS_LPRN, PS_CIRC, PS_PERC, PS_DLR,  TD_RPRN, _______, _______, _______, LT_LFTX, KC_DOWN, KC_RGHT, KC_PGDN},
+        {PS_LPRN, KC_CIRC, PS_PERC, PS_DLR,  TD_RPRN, _______, _______, _______, LT_LFTX, KC_DOWN, KC_RGHT, KC_PGDN},
         {KC_LBRC, KC_HASH, KC_AT,   KC_EXLM, TD_RBRC, _______, _______, _______, _______, _______, _______, _______},
         {___x___, ___x___, ___x___, KC_BSLS, PS_PIPE, ___x___, ___x___, ___fn__, ___x___, ___x___, ___x___, ___x___},
     },
@@ -852,10 +851,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             break;
         case OS_GUI:
             tap_mods(record, KC_LGUI);
-            break;
-        case PS_CIRC:
-            /* GUI_T(S(KC_6)) */
-            mt_shift(record, KC_LGUI, KC_6);
             break;
         case PS_DLR:
             /* SFT_T(S(KC_4)) */
