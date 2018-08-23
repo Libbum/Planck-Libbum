@@ -1,6 +1,7 @@
 # Libbum's Planck Configuration
 
 ![Overview](layout/overview.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FLibbum%2FPlanck-Libbum.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FLibbum%2FPlanck-Libbum?ref=badge_shield)
 
 Working from the [default configuration](https://github.com/qmk/qmk_firmware/tree/master/keyboards/planck/keymaps/default) of the QMK firmware, this layout will at some stage in the future be used for my Planck.
 
@@ -48,3 +49,7 @@ May investigate some ideas [ojbucao](https://github.com/ojbucao/Workman/tree/mas
 * [ ] Unicode aware, Swedish extra characters and common math symbols
 * [ ] Latex and other common programming macros
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FLibbum%2FPlanck-Libbum.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FLibbum%2FPlanck-Libbum?ref=badge_large)
